@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.3"
+cache: pip
+install:
+  - pip install python3
+script:
+  - python3 BlackJack.py
