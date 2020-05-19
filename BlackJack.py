@@ -80,6 +80,11 @@ class player():
         values = [value[1][1] for value in self.cards]
         #print(values)
         return sum(values)
+    def resetcards(self):
+        self.cards = ()
+    def incr_chips(self):
+        global min_bet
+        self.chips += min_bet
 
 class dealer():
     def __init__(self,player):
@@ -125,11 +130,12 @@ min_bet = 10
 win = False
 
 print("Welcome to BlackJack!")
-
+player1 = player(100)
 while(play):
-    player1 = player(100)
+    player1.resetcards()
     dealerman = dealer(player1)
     game_over = 0
+    print("Player's chips value: {}".format(player1.chips_left()))
     print("Please bet {} to proceed".format(min_bet))
     bet = int(input())
     if bet < min_bet:
@@ -152,6 +158,7 @@ while(play):
         hit = 1
         while(hit):
             print("Player's card value: {}".format(player1.get_card_value()))
+            print("Player's chips value: {}".format(player1.chips_left()))
             print("Do you want to hit?(1/0)")
             hit = int(input())
             if not hit:
@@ -173,5 +180,8 @@ while(play):
                 if (dealerman.get_card_value() <= 21 and dealerman.get_card_value() > player1.get_card_value()):
                     dealerman.winner('\t Dealer', dealerman.get_card_value())
                     win = True
-            if not win:
+                else:
+                    win = False
+            if win == False:
                 dealerman.winner('\t player1', player1.get_card_value())
+                player1.incr_chips()
